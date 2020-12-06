@@ -1,0 +1,47 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="ETPTheme" parent="ETPThemeBase" />
+    <style name="ETPThemeBase" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorAccent</item>
+        <!-- Customize your theme here. -->
+        <item name="android:buttonStyle">@style/ButtonStyle</item>
+        <item name="android:titleTextColor">#000000</item>
+
+        <item name="editTextStyle">@style/EditTextStyle</item>
+        <item name="android:textSize">16sp</item>
+        <item name="switchStyle">@style/SwitchStyle</item>
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
+        <item name="homeAsUpIndicator">@drawable/home_as_up_indicator</item>
+    </style>
+
+
+    <style name="ButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:background">@drawable/button_shape</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:height">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="SwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:height">?attr/actionBarSize</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:thumb">@drawable/switch_compat_thumb</item>
+        <item name="track">@drawable/switch_compat_track</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">?attr/colorAccent</item>
+
+
+    </style>
+</resources>

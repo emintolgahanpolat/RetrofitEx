@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="switch_on">#4cda64</color>
+    <color name="switch_off">#dddddd</color>
+</resources>

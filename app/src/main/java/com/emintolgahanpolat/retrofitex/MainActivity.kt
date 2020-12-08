@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         refreshTokenBtn.setOnClickListener {
             refreshToken()
         }
-
+        serviceDataLbl.text = AppPreferences.user.toString()
         testServiceBtn.setOnClickListener {
             serviceDataLbl.text = ""
             fetchUserDetail {
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
             if (response != null) {
                 //serviceDataLbl.text = "User :\n$response"
-
+                AppPreferences.user = response
                 callback(response.toString())
             } else {
                 showToast(error?.message)

@@ -43,9 +43,28 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'API_ADDRESS', "\"http:/${getLocalHost()}:8080/\""
+            manifestPlaceholders = [
+                    app_name           : "@string/app_name",
+                    ic_launcher        : "@mipmap/ic_launcher",
+                    ic_launcher_rounded: "@mipmap/ic_launcher_round"]
         }
-        debug{
+        debug {
+            applicationIdSuffix ".debug"
             buildConfigField 'String', 'API_ADDRESS', "\"http:/${getLocalHost()}:8080/\""
+            manifestPlaceholders = [
+                    app_name           : "@string/app_name_debug",
+                    ic_launcher        : "@mipmap/ic_launcher_dev",
+                    ic_launcher_rounded: "@mipmap/ic_launcher_dev_round"
+            ]
+        }
+        dev {
+            initWith debug
+            applicationIdSuffix ".dev"
+            buildConfigField 'String', 'API_ADDRESS', "\"http:/${getLocalHost()}:8080/\""
+            manifestPlaceholders = [
+                    app_name           : "@string/app_name_dev",
+                    ic_launcher        : "@mipmap/ic_launcher_dev",
+                    ic_launcher_rounded: "@mipmap/ic_launcher_dev_round"]
         }
 
     }

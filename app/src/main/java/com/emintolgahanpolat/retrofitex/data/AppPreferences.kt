@@ -2,9 +2,12 @@ package com.emintolgahanpolat.retrofitex.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
+import com.emintolgahanpolat.retrofitex.BuildConfig
+import com.emintolgahanpolat.retrofitex.model.User
 
 object AppPreferences {
-    private const val NAME = "SpinKotlin"
+    private const val NAME = BuildConfig.APPLICATION_ID + "SHARED_PREFERENCES"
     private const val MODE = Context.MODE_PRIVATE
     private lateinit var preferences: SharedPreferences
 
@@ -16,8 +19,8 @@ object AppPreferences {
         preferences = context.getSharedPreferences(NAME, MODE)
     }
 
-    var counter: Int
-        get() = preferences.get(COUNTER, -1)
+    var user: User?
+        get() = preferences.getObject(COUNTER,User::class.java)
         set(value) = preferences.setValue(COUNTER,value)
 
     var token: String?

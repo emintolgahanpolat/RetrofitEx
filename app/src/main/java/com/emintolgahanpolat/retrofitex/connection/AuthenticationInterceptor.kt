@@ -1,10 +1,8 @@
 package com.emintolgahanpolat.retrofitex.connection
 
 import android.util.Log
-import com.emintolgahanpolat.retrofitex.AppToast
 import com.emintolgahanpolat.retrofitex.data.AppPreferences
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
 /*
 class AuthenticationInterceptorRefreshToken  : Interceptor {
@@ -71,14 +69,14 @@ class AuthenticationInterceptorRefreshToken  : Interceptor {
 
                     return when {
                         responseNewTokenLoginModel == null || responseNewTokenLoginModel.code() != 200 -> {
-                            AppToast.show("Log Out")
+
 
                            //logout
                             null
                         }
                         else -> {
                             responseNewTokenLoginModel.body()?.let {
-                                AppToast.show("Refresh Token")
+
                                 Log.i("Refresh Token","Token Yenilendi")
                                 AppPreferences.token = it.token
                                 AppPreferences.refreshToken = it.refreshToken

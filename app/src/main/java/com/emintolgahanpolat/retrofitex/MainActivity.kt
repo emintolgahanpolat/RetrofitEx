@@ -1,13 +1,13 @@
 package com.emintolgahanpolat.retrofitex
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.emintolgahanpolat.retrofitex.connection.ApiResult
 import com.emintolgahanpolat.retrofitex.connection.RetrofitBuilder
 import com.emintolgahanpolat.retrofitex.connection.enqueue
 import com.emintolgahanpolat.retrofitex.data.AppPreferences
+import com.emintolgahanpolat.retrofitex.data.getTokens
+import com.emintolgahanpolat.retrofitex.model.User
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -15,56 +15,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        loginDataLbl.text =
-                "Token :\n ${AppPreferences.token}\n\nRefresh Token :\n${AppPreferences.refreshToken}"
+        loginDataLbl.text = AppPreferences.getTokens()
 
         refreshTokenBtn.setOnClickListener {
             refreshToken()
         }
-        serviceDataLbl.text = AppPreferences.user.toString()
+
+
         testServiceBtn.setOnClickListener {
             serviceDataLbl.text = ""
-            fetchUserDetail {
-                serviceDataLbl.text = "\n${serviceDataLbl.text}\n0\n$it\n"
-            }
-            /*
-            thread {
-                fetchUserDetail {
-                    serviceDataLbl.text = "\n${serviceDataLbl.text}\n1\n$it\n"
-                }
+
+            fetchUserDetail{
+                serviceDataLbl.text = "\n${it}\n"
             }
 
-            thread {
-                fetchUserDetail {
-                    serviceDataLbl.text = "\n${serviceDataLbl.text}\n2\n$it\n"
-                }
-            }
-
-            thread {
-                fetchUserDetail {
-                    serviceDataLbl.text = "\n${serviceDataLbl.text}\n3\n$it\n"
-                }
-            }
-
-            thread {
-                fetchUserDetail {
-                    serviceDataLbl.text = "\n${serviceDataLbl.text}\n4\n$it\n"
-                }
-            }
-
-            thread {
-                fetchUserDetail {
-                    serviceDataLbl.text = "\n${serviceDataLbl.text}\n5\n$it\n"
-                }
-            }
-
-            thread {
-                fetchUserDetail {
-                    serviceDataLbl.text = "\n${serviceDataLbl.text}\n6\n$it\n"
-                }
-            }
-
-             */
 
         }
         removeTokenBtn.setOnClickListener {
@@ -79,32 +43,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchUserDetail(callback: (String?) -> Unit) {
-
-        RetrofitBuilder.instance.user().enqueue(this) { response, error ->
-
-            if (response != null) {
-                //serviceDataLbl.text = "User :\n$response"
-                AppPreferences.user = response
-                callback(response.toString())
-            } else {
-                showToast(error?.message)
-            }
+    private fun fetchUserDetail(callback: (User?) -> Unit) {
+        callback(AppPreferences.user)
+        RetrofitBuilder.instance.user().enqueue(this){
+            AppPreferences.user = it.response
+            it.response?.let(callback)
         }
     }
 
     private fun refreshToken() {
         RetrofitBuilder.instance.refreshToken("Bearer ${AppPreferences.refreshToken}")
-                .enqueue(this) { response, error ->
-                    if (response != null) {
-
-                        AppPreferences.refreshToken = response.refreshToken
-                        AppPreferences.token = response.token
+                .enqueue(this) {
+                    if (it.response != null) {
+                        AppPreferences.refreshToken = it.response?.refreshToken
+                        AppPreferences.token = it.response?.token
                         loginDataLbl.text =
-                                "Token :\n ${response.token}\n\nRefresh Token :\n${response.refreshToken}"
+                                "Token :\n ${it.response?.token}\n\nRefresh Token :\n${it.response?.refreshToken}"
 
                     } else {
-                        showToast(error?.message)
+                        it.error?.message?.let {
+                            showToast(it)
+                        }
                     }
                 }
     }

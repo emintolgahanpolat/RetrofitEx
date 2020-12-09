@@ -19,32 +19,15 @@ fun Activity.finishAndStartActivityIntent(cls: Class<*>?){
     this.startActivity(Intent(this,cls))
     this.finish()
 }
-fun Activity.toast(text: CharSequence?): Toast {
+fun Context.toast(text: CharSequence?): Toast {
     return Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT)
 }
 
-fun Activity.showToast(text: CharSequence?) {
+fun Context.showToast(text: CharSequence?) {
     toast(text).show()
 }
 
 
-inline fun Activity.alertDialog(body: AlertDialog.Builder.() -> AlertDialog.Builder): AlertDialog {
-    return AlertDialog.Builder(this)
-        .body()
-        .show()
-}
-
-
-fun Activity.showOnUI(alertDialog: Dialog){
-    runOnUiThread {
-        alertDialog.show()
-    }
-}
-fun Activity.dismissOnUI(alertDialog: Dialog){
-    runOnUiThread {
-        alertDialog.dismiss()
-    }
-}
 
 fun Activity.createLoadingDialog() : Dialog {
     val alertDialog = Dialog(this)
@@ -53,18 +36,6 @@ fun Activity.createLoadingDialog() : Dialog {
 }
 
 
-object AppToast {
-    private lateinit var context: Context
-    fun init(context: Context) {
-        this.context = context
-    }
-
-    fun show(text: CharSequence?) {
-        Toast.makeText(context, "App Toast $text", Toast.LENGTH_SHORT).show()
-    }
-
-
-}
 
 
 fun ImageView.base64(base64String: String) {

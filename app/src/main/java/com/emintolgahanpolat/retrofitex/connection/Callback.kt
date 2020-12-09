@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import com.emintolgahanpolat.retrofitex.SplashActivity
+import com.emintolgahanpolat.retrofitex.createLoadingDialog
 import com.emintolgahanpolat.retrofitex.data.AppPreferences
 import com.emintolgahanpolat.retrofitex.model.ApiError
 import com.google.gson.Gson
@@ -43,15 +44,22 @@ abstract class MyCallback<T> : Callback<T> {
     abstract fun error(error: ApiError?)
 }
 
+data class ApiResult<T>(var response: T?,var error: ApiError?)
+
+
+
 
 inline fun <reified T> Call<T>.enqueue(
-        context: Activity? = null,
-        crossinline result: (response: T?, error: ApiError?) -> Unit
+    context: Activity? = null,
+    crossinline result: (ApiResult<T>) -> Unit
 ) {
+    val dialog = context?.createLoadingDialog()
+    dialog?.show()
     enqueue(object : MyCallback<T>() {
         override fun success(response: Response<T>) {
 
-            result(response.body(), null)
+            result(ApiResult(response.body(),null))
+            dialog?.dismiss()
         }
 
         override fun error(error: ApiError?) {
@@ -61,20 +69,21 @@ inline fun <reified T> Call<T>.enqueue(
             context?.let {
                 error?.let {
                     AlertDialog.Builder(context)
-                            .setTitle(error.error)
-                            .setMessage(error.message)
-                            .setNegativeButton("Tamam", null)
-                            .show()
+                        .setTitle(error.error)
+                        .setMessage(error.message)
+                        .setNegativeButton("Tamam", null)
+                        .show()
                 }
 
             }
-            result(null, error)
+            result(ApiResult(null,error))
+            dialog?.dismiss()
         }
 
     })
 }
 
-fun Activity.logout() {
+fun Context.logout() {
     AppPreferences.token = null
     AppPreferences.refreshToken = null
     val intent = Intent(this, SplashActivity::class.java)

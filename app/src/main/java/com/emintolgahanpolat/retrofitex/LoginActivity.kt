@@ -33,14 +33,14 @@ class LoginActivity : AppCompatActivity() {
 
     private fun fetchCaptcha() {
         refreshCaptchaImgBtn.isEnabled = false
-        RetrofitBuilder.instance.captcha().enqueue(this) { response, error ->
+        RetrofitBuilder.instance.captcha().enqueue(this) {
             refreshCaptchaImgBtn.isEnabled = true
-            if (response != null) {
+            if (it.response != null) {
 
-                captchaImgV.base64(response.captcha)
+                captchaImgV.base64(it.response?.captcha!!)
 
             } else {
-                showToast(error?.message)
+                showToast(it.error?.message)
             }
         }
     }
@@ -49,15 +49,18 @@ class LoginActivity : AppCompatActivity() {
 
 
         RetrofitBuilder.instance.login("${captchaEt.text}", Login("${usernameEt.text}", "${passwordEt.text}"))
-                .enqueue(this) { response, error ->
-                    if (response != null) {
-                        AppPreferences.refreshToken = response.refreshToken
-                        AppPreferences.token = response.token
-                        finishAndStartActivityIntent(MainActivity::class.java)
-                    } else {
-                        fetchCaptcha()
-                        showToast(error?.message)
-                    }
+                .enqueue(this) {
+
+                        if (it.response != null) {
+                            AppPreferences.refreshToken = it.response?.refreshToken
+                            AppPreferences.token = it.response?.token
+                            finishAndStartActivityIntent(MainActivity::class.java)
+                        } else {
+                            fetchCaptcha()
+                            showToast(it.error?.message)
+                        }
+
+
                 }
     }
 }

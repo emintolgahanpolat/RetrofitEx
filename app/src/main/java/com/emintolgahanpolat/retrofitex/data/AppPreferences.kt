@@ -20,14 +20,21 @@ object AppPreferences {
     }
 
     var user: User?
-        get() = preferences.getObject(COUNTER,User::class.java)
-        set(value) = preferences.setValue(COUNTER,value)
+        get() = preferences.getObject(COUNTER, User::class.java)
+        set(value) = preferences.setValue(COUNTER, value)
 
     var token: String?
         get() = preferences.getString(TOKEN, null)
-        set(value) = preferences.setValue(TOKEN,value)
+        set(value) = preferences.setValue(TOKEN, value)
 
     var refreshToken: String?
         get() = preferences.getString(TOKEN_REFRESH, null)
-        set(value) = preferences.setValue(TOKEN_REFRESH,value)
+        set(value) = preferences.setValue(TOKEN_REFRESH, value)
+
+
+}
+
+
+fun AppPreferences.getTokens(): String? {
+    return "Token :\n$token\n\nRefresh Token :\n$refreshToken"
 }

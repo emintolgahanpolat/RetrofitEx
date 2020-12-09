@@ -8,7 +8,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         AppPreferences.init(this)
-        AppToast.init(this)
+
 
     }
 }

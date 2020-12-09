@@ -10,22 +10,22 @@ data class Captcha(val captcha: String)
 
 
 data class User (
-    val username: String,
-    val firstname: String,
-    val lastname: String,
-    val email: String,
-    val authorities: List<Authority>,
-    val enabled: Boolean
+    var username: String,
+    var firstname: String,
+    var lastname: String,
+    var email: String,
+    var authorities: List<Authority>,
+    var enabled: Boolean
 )
 
 data class Authority (val authority: String)
 
 
 data class ApiError (
-    val timestamp: String,
-    val status: Int,
-    val error: String,
-    val message: String,
-    val path: String,
-    val errors: List<Any?>
+    var timestamp: String,
+    var status: Int,
+    var error: String,
+    var message: String,
+    var path: String,
+    var errors: List<Any?>
 )

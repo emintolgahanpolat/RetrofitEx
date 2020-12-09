@@ -53,8 +53,8 @@ android {
             buildConfigField 'String', 'API_ADDRESS', "\"http:/${getLocalHost()}:8080/\""
             manifestPlaceholders = [
                     app_name           : "@string/app_name_debug",
-                    ic_launcher        : "@mipmap/ic_launcher_dev",
-                    ic_launcher_rounded: "@mipmap/ic_launcher_dev_round"
+                    ic_launcher        : "@mipmap/ic_launcher",
+                    ic_launcher_rounded: "@mipmap/ic_launcher_round"
             ]
         }
         dev {

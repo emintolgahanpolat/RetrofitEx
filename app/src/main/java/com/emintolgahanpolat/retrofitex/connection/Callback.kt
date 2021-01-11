@@ -63,9 +63,7 @@ inline fun <reified T> Call<T>.enqueue(
         }
 
         override fun error(error: ApiError?) {
-            if (error?.status == 401) {
-                context?.logout()
-            }
+
             context?.let {
                 error?.let {
                     AlertDialog.Builder(context)
@@ -81,12 +79,4 @@ inline fun <reified T> Call<T>.enqueue(
         }
 
     })
-}
-
-fun Context.logout() {
-    AppPreferences.token = null
-    AppPreferences.refreshToken = null
-    val intent = Intent(this, SplashActivity::class.java)
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-    startActivity(intent)
 }

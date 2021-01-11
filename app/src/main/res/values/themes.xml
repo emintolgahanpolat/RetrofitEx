@@ -13,6 +13,7 @@
         <item name="switchStyle">@style/SwitchStyle</item>
         <item name="toolbarStyle">@style/ToolbarStyle</item>
         <item name="homeAsUpIndicator">@drawable/home_as_up_indicator</item>
+        <item name="alertDialogTheme">@style/AlertDialogStyle</item>
     </style>
 
 
@@ -41,7 +42,11 @@
 
     <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">?attr/colorAccent</item>
+    </style>
 
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@drawable/dialog_bg</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
 
     </style>
 </resources>

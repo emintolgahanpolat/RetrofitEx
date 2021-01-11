@@ -1,5 +1,6 @@
 package com.emintolgahanpolat.retrofitex
 
+import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.emintolgahanpolat.retrofitex.connection.ApiResult
@@ -9,18 +10,46 @@ import com.emintolgahanpolat.retrofitex.data.AppPreferences
 import com.emintolgahanpolat.retrofitex.data.getTokens
 import com.emintolgahanpolat.retrofitex.model.User
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var appPermission: AppPermission
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        appPermission = AppPermission(this)
 
         loginDataLbl.text = AppPreferences.getTokens()
 
         refreshTokenBtn.setOnClickListener {
             refreshToken()
         }
+        permissionBtn.setOnClickListener {
+            appPermission.setPermission(AppPermission.Permission.CAMERA,AppPermission.Permission.READ_CONTACTS,AppPermission.Permission.WRITE_CONTACTS).check(listener = object :AppPermission.PermissionListener{
+                override fun onPermissionGranted() {
+                    showToast("İzin Verildi")
+                }
 
+                override fun onPermissionDenied(deniedPermissions: List<AppPermission.Permission>) {
+
+                    if (deniedPermissions.find { x ->  x == AppPermission.Permission.CAMERA } != null){
+                        alertDialog {
+                            setTitle("Uyarı")
+                            setMessage("Uygulamayı kullanabilmek için kamerra izni verilmesi gerrekiyor.")
+                            setCancelable(false)
+                            setNegativeButton("Hayır"){_,_ ->
+                                exitProcess(0)
+                            }
+                            setPositiveButton("İzin Ver"){_,_->
+                                appPermission.openSettings()
+                            }
+                        }
+                    }
+
+                }
+
+            })
+        }
 
         testServiceBtn.setOnClickListener {
             serviceDataLbl.text = ""
@@ -43,8 +72,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        appPermission.onRequestPermissionsResult(requestCode,permissions,grantResults)
+    }
     private fun fetchUserDetail(callback: (User?) -> Unit) {
-        callback(AppPreferences.user)
+        AppPreferences.user?.let(callback)
         RetrofitBuilder.instance.user().enqueue(this){
             AppPreferences.user = it.response
             it.response?.let(callback)

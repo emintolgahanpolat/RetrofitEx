@@ -1,8 +1,8 @@
 package com.emintolgahanpolat.retrofitex
 
-import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Spannable
 import com.emintolgahanpolat.retrofitex.connection.RetrofitBuilder
 import com.emintolgahanpolat.retrofitex.connection.enqueue
 import com.emintolgahanpolat.retrofitex.data.AppPreferences
@@ -27,6 +27,9 @@ class LoginActivity : AppCompatActivity() {
             loginAction()
         }
 
+
+
+        titleText.text =  "Merhaba Dünya Hello".toSpannable().boldText(0,5).underline(3,6).foregroundColorSpan(this.getColor(R.color.switch_on),4,8)
 
     }
 
@@ -64,4 +67,5 @@ class LoginActivity : AppCompatActivity() {
                 }
     }
 }
+
 

@@ -26,6 +26,13 @@
             android:text="@string/refresh_token"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/permissionBtn"
+            android:text="Run Time Permission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <Button
             android:id="@+id/removeTokenBtn"
             android:text="@string/remove_token"

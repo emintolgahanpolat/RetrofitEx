@@ -2,10 +2,11 @@ package com.emintolgahanpolat.retrofitex
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Base64
 import android.widget.ImageView
 import android.widget.Toast
@@ -27,11 +28,17 @@ fun Context.showToast(text: CharSequence?) {
     toast(text).show()
 }
 
+inline fun Activity.alertDialog(body: AlertDialog.Builder.() -> AlertDialog.Builder): AlertDialog {
+    return AlertDialog.Builder(this)
+        .body()
+        .show()
+}
 
 
 fun Activity.createLoadingDialog() : Dialog {
     val alertDialog = Dialog(this)
     alertDialog.setContentView(R.layout.loading_layout)
+    alertDialog.setCancelable(false)
     return alertDialog
 }
 
